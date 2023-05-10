@@ -45,6 +45,12 @@ public class UnitActionSystem : MonoBehaviour
                 Debug.Log("You cannot move here!");
             }
         }
+
+        if(Input.GetMouseButtonDown(1)) 
+        {
+            selectedUnit.GetSpinAction().Spin();
+        }
+
     }
 
 
