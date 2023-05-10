@@ -4,18 +4,18 @@ using UnityEngine;
 
 public class Testing : MonoBehaviour
 {
-    private GridSystem gridSystem;
-
+    [SerializeField] private Unit unit;
     void Start()
     {
-        gridSystem = new GridSystem(10, 10, 2f);
-
-        Debug.Log(new GridPosition(4, 6));
     }
 
     private void Update()
     {
-        Debug.Log(gridSystem.GetGridPosition(MouseWorld.GetPosition()));
+        if(Input.GetKeyDown(KeyCode.T)) 
+        {
+            GridSystemVisual.Instance.HideAllGridPosition();
+            GridSystemVisual.Instance.ShowGridPositionList(unit.GetMoveAction().GetValidActionGridPositionList());
+        }
     }
 
 }
