@@ -1,21 +1,21 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class MoveAction : MonoBehaviour
+public class MoveAction : BaseAction
 {
     [SerializeField] private Animator moveAnimator;
     [SerializeField] private int maxMoveDistance = 4;
 
     private Vector3 targetPosition;
-    private Unit unit;
-    private bool isActive;
+    
 
-    private void Awake()
+    protected override void Awake()
     {
-        unit = GetComponent<Unit>();
+        base.Awake();
         targetPosition = transform.position;
     }
 
@@ -40,6 +40,7 @@ public class MoveAction : MonoBehaviour
         {
             moveAnimator.SetBool("IsWalking", false);
             isActive = false;
+            onActionComplete();
         }
 
         float rotateSpeed = 15f;
@@ -47,19 +48,15 @@ public class MoveAction : MonoBehaviour
 
     }
 
-    public void Move(GridPosition gridPosition)
+    public override void TakeAction(GridPosition gridPosition, Action onActionComplete)
     {
+        this.onActionComplete = onActionComplete;
         this.targetPosition = LevelGrid.Instance.GetWorldPosition(gridPosition);
         isActive = true;
     }
 
-    public bool IsValidActionGridPosition(GridPosition gridPosition) 
-    {
-        List<GridPosition> validGridPositionsList = GetValidActionGridPositionList();
-        return validGridPositionsList.Contains(gridPosition);
-    }
 
-    public List<GridPosition> GetValidActionGridPositionList()
+    public override List<GridPosition> GetValidActionGridPositionList()
     {
         List<GridPosition> validGridPositionsList = new List<GridPosition>();
 
@@ -92,5 +89,10 @@ public class MoveAction : MonoBehaviour
         }
 
         return validGridPositionsList;
+    }
+
+    public override string GetActionName()
+    {
+        return "Move";
     }
 }

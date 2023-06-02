@@ -1,18 +1,29 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BaseAction : MonoBehaviour
+public abstract class BaseAction : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    protected Unit unit;
+    protected bool isActive;
+    protected Action onActionComplete;
+
+    protected virtual void Awake()
     {
-        
+        unit = GetComponent<Unit>();
     }
 
-    // Update is called once per frame
-    void Update()
+    public abstract string GetActionName(); 
+
+    public abstract void TakeAction(GridPosition gridPosition, Action onActionComplete);
+
+    public virtual bool IsValidActionGridPosition(GridPosition gridPosition)
     {
-        
+        List<GridPosition> validGridPositionsList = GetValidActionGridPositionList();
+        return validGridPositionsList.Contains(gridPosition);
     }
+
+    public abstract List<GridPosition> GetValidActionGridPositionList();
 }
+
